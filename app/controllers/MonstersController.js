@@ -1,9 +1,11 @@
+import { AppState } from "../AppState.js";
 import { monstersService } from "../services/MonstersService.js";
 import { Pop } from "../utils/Pop.js";
 
 export class MonstersController {
   constructor() {
     console.log('Monsters Controller is ready!');
+    AppState.on('monsters', this.drawMonsters)
     this.getMonsters()
   }
 
@@ -43,5 +45,13 @@ export class MonstersController {
       console.error('Could not get monsters from API', error)
       Pop.error(error, "Could not get monsters!")
     }
+  }
+
+  drawMonsters() {
+    const monsters = AppState.monsters
+    let monsterCardsContent = ''
+    monsters.forEach(monster => monsterCardsContent += monster.card)
+    const monsterCardsElem = document.getElementById('monsterCards')
+    monsterCardsElem.innerHTML = monsterCardsContent
   }
 }
