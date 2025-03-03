@@ -1,37 +1,59 @@
 export class Monster {
   constructor(data) {
-    this.commonLocations = data.common_locations
+    this.commonLocations = data.common_locations ?? []
+    this.drops = data.drops ?? []
     this.description = data.description
     this.isDLC = data.dlc
-    this.drops = data.drops
     // NOTE we can use the API's assigned ids instead of generating our own
     this.id = data.id
     this.image = data.image
     this.name = data.name
   }
 
+  get dlcIcon() {
+    if (this.isDLC) {
+      return '<span class="mdi mdi-download-circle-outline"></span>'
+    }
+
+    return ''
+  }
+
+  get locationListItems() {
+    if (this.commonLocations.length == 0) {
+      return 'No locations'
+    }
+
+    let listItems = ''
+    this.commonLocations.forEach(location => listItems += `<li>${location}</li>`)
+    return listItems
+  }
+  get dropListItems() {
+    if (this.drops.length == 0) {
+      return 'No drops'
+    }
+
+    let listItems = ''
+    this.drops.forEach(drop => listItems += `<li>${drop}</li>`)
+    return listItems
+  }
+
   get card() {
     return `
     <div class="col-md-4">
-      <div class="bg-light shadow">
-        <img src="https://botw-compendium.herokuapp.com/api/v3/compendium/entry/treasure_octorok/image"
-          alt="some monster" class="monster-img">
+      <div class="bg-light shadow mb-3">
+        <img src="${this.image}" alt="${this.name}" class="monster-img">
         <div class="p-2">
-          <p class="fs-2">
-            Octorok <span class="mdi mdi-download-circle-outline"></span>
+          <p class="fs-2 text-capitalize">
+            ${this.name} ${this.dlcIcon}
           </p>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere accusamus accusantium magni amet? Id
-            non
-            dolorum ea praesentium aut repudiandae!</p>
+          <p>${this.description}</p>
           <p>Locations</p>
           <ul>
-            <li>The river</li>
-            <li>The Mountain</li>
+            ${this.locationListItems}
           </ul>
           <p>Drops</p>
           <ul>
-            <li>Treasure</li>
-            <li>Hot Dogs</li>
+            ${this.dropListItems}
           </ul>
         </div>
 
