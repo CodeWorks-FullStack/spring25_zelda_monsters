@@ -5,9 +5,17 @@ export class MonstersController {
   }
 
   getResultBack() {
-    const result = new Promise((resolve) => {
+    const result = new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve('All done, here is the result')
+        const randomNum = Math.round(Math.random() * 10)
+
+        if (randomNum > 5) {
+          resolve(`randomNum was ${randomNum}`)
+        }
+
+        else {
+          reject(`randomNum was ${randomNum}`)
+        }
       }, 3000)
     })
 
@@ -15,9 +23,11 @@ export class MonstersController {
   }
 
   async testPromise() {
-    const something = await this.getResultBack()
-
-    console.log('what is something', something);
-
+    try {
+      const something = await this.getResultBack()
+      console.log('what is something', something);
+    } catch (error) {
+      console.error('PROMISE WAS REJECTED');
+    }
   }
 }
