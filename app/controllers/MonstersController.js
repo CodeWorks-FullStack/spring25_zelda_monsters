@@ -38,6 +38,7 @@ export class MonstersController {
     try {
       await monstersService.getMonsters()
       Pop.success('Successful request to get the monsters')
+      // NOTE if any error is THROWN in the try block, it catches the error and runs this code block instead
     } catch (error) {
       console.error('Could not get monsters from API', error)
       Pop.error(error, "Could not get monsters!")
