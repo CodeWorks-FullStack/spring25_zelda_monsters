@@ -1,7 +1,9 @@
+import { monstersService } from "../services/MonstersService.js";
+
 export class MonstersController {
   constructor() {
-    this.testPromise()
     console.log('Monsters Controller is ready!');
+    this.getMonsters()
   }
 
   getResultBack() {
@@ -28,6 +30,15 @@ export class MonstersController {
       console.log('what is something', something);
     } catch (error) {
       console.error('PROMISE WAS REJECTED');
+    }
+  }
+
+  async getMonsters() {
+    try {
+      monstersService.getMonsters()
+
+    } catch (error) {
+      console.error('Could not get monsters from API', error)
     }
   }
 }
